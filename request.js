@@ -1,15 +1,17 @@
-let axios = require("axios");
+//const axios = require("axios");
 const config = require("./config");
+const getUri = require("./getUri");
+const axios = require("./axios.mock");
 
-axios = require("./axios.mock");
+const queries = {
+    "limit": config.HUBSPOT_LIST_LIMIT,
+    "offset": 0,
+    "hapikey": config.API_KEY
+};
 
-function getUri(query) {
-    const queryEncode = Object.keys(query).map(key => `${key}=${query[key]}`).join('&');
-    return `${config.HUBSPOT_LIST_COMPANY_BASE_URI}?${queryEncode}`;
-}
-
-function requestPromise(counter, uri) {
-    return new Promise(function (resolve, reject) {
+const requestPromise = (function (uri) {
+    let counter = 0;
+    const handler = function (resolve, reject) {
         axios.get(uri).then(function (response) {
             resolve(response);
         }).catch(function (error) {
@@ -20,21 +22,18 @@ function requestPromise(counter, uri) {
             counter++;
             console.log(`Try ${counter} ...`);
             setTimeout(() => {
-                resolve(requestPromise(counter, uri));
+                resolve(new Promise(handler));
             }, config.CALL_MILISECONDS_INTERVAL);
         });
-    });
-}
+    }
+    return function () {
+        return new Promise(handler);
+    };
+})(getUri(queries));
 
-const getCompanies = function (counter = 0) {
-    const uri = getUri({
-        "limit": config.HUBSPOT_LIST_LIMIT,
-        "offset": 0,
-        "hapikey": config.API_KEY
-    });
-    return requestPromise(counter, uri);
-};
 
 module.exports = {
-    getCompanies
+    getCompanies: function () {
+        return requestPromise();
+    }
 }
