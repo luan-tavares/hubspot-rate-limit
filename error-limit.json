@@ -1,0 +1,8 @@
+{
+    "status": "error",
+    "message": "You have reached your ten_secondly_rolling limit.",
+    "errorType": "RATE_LIMIT",
+    "correlationId": "d83331ff-fc29-4116-861b-b9fcb6115c9c",
+    "policyName": "TEN_SECONDLY_ROLLING",
+    "groupName": "publicapi:hapikey-api-calls-ten-secondly: 6426918"
+}
