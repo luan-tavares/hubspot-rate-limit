@@ -5,12 +5,13 @@ let axios = require("axios");
 function Request(uri) {
     let tryCounter = 0;
 
-    function callRequest(resolve, reject) {
-        axios.get(uri).then(function (response) {
+    async function callRequest(resolve, reject) {
+        try {
+            const response = await axios.get(uri);
             resolve(response);
-        }).catch(function (error) {
+        } catch (error) {
             errorCatch(error, resolve, reject);
-        });
+        }
     }
 
     function canTryAgain(error) {
