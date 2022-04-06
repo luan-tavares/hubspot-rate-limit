@@ -9,31 +9,35 @@ const queries = {
     "hapikey": config.API_KEY
 };
 
-const requestPromise = (function (uri) {
-    let counter = 0;
+const requestPromise = (function () {
+    let tryCounter = 0;
+
     const handler = function (resolve, reject) {
-        axios.get(uri).then(function (response) {
+        axios.get(getUri(queries)).then(function (response) {
             resolve(response);
         }).catch(function (error) {
-            if (counter >= config.CALL_TRY_LIMIT || error.response.data.errorType !== config.HUBSPOT_RATE_LIMIT_CODE) {
+            if (tryCounter >= config.CALL_TRY_LIMIT || error.response.data.errorType !== config.HUBSPOT_RATE_LIMIT_CODE) {
                 reject(error.response);
                 return;
             }
-            counter++;
-            console.log(`Try ${counter} ...`);
+            tryCounter++;
+            console.log(`Try ${tryCounter} ...`);
             setTimeout(() => {
                 resolve(new Promise(handler));
             }, config.CALL_MILISECONDS_INTERVAL);
         });
     }
-    return function () {
-        return new Promise(handler);
+
+    return {
+        call: function () {
+            return new Promise(handler);
+        }
     };
-})(getUri(queries));
+})();
 
 
 module.exports = {
     getCompanies: function () {
-        return requestPromise();
+        return requestPromise.call();
     }
 }
