@@ -1,4 +1,4 @@
-const config = require("./config");
+const config = require("../config/config");
 
 module.exports = function (query) {
     const queryEncode = Object.keys(query).map(key => `${key}=${query[key]}`).join('&');

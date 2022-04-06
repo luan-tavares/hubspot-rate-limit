@@ -1,15 +1,18 @@
 const fs = require('fs');
+const path = require('path');
 
 const STATUS = 402;
-const HUBSOT_ERROR_LIMIT_JSON = './error-limit.json';
+const HUBSOT_ERROR_LIMIT_JSON = '../config/error-limit.json';
 
-function get(url) {
+function get() {
+    const fullPath = path.resolve(__dirname, HUBSOT_ERROR_LIMIT_JSON);
     let data;
     try {
-        data = JSON.parse(fs.readFileSync(HUBSOT_ERROR_LIMIT_JSON, 'utf8'));
+        data = JSON.parse(fs.readFileSync(fullPath, 'utf8'));
     } catch (err) {
         data = null;
     }
+
 
     const response = {
         status: STATUS,

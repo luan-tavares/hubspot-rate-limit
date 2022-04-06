@@ -1,8 +1,8 @@
-const axios = require("./axios.mock");
-const config = require("./config");
-//const axios = require("axios");
+const config = require("../config/config");
+let axios = require("axios");
+//axios = require("./axios.mock");
 
-function RequestPromise(uri) {
+function Request(uri) {
     let tryCounter = 0;
 
     function callRequest(resolve, reject) {
@@ -40,7 +40,7 @@ function RequestPromise(uri) {
         return new Promise(callRequest);
     }
 
-    this.call = generatePromise;
+    this.getCompanies = generatePromise;
 }
 
-module.exports = RequestPromise;
+module.exports = Request;
