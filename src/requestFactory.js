@@ -1,6 +1,5 @@
 const config = require("../config/config");
-let axios = require("axios");
-//axios = require("./axios.mock");
+const axios = require("./axios");
 
 const requestFactory = function (uri) {
     let tryCounter = 0;

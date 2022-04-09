@@ -1,6 +1,5 @@
 const Request = require("./src/Request");
 const getUri = require("./src/getUri");
-const config = require("./config/config");
 const queries = require("./src/getCompaniesQuery");
 
 const request = new Request(getUri(queries));

@@ -7,6 +7,7 @@ const config = {
     HUBSPOT_RATE_LIMIT_CODE: "RATE_LIMIT",
     CALL_TRY_LIMIT: 3,
     CALL_MILISECONDS_INTERVAL: 500,
+    MOCK_AXIOS: (process.env.MOCK_AXIOS == "true")
 };
 
 module.exports = config;
